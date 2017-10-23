@@ -1,0 +1,68 @@
+.clock {
+  position: relative; }
+
+.solid-arc {
+  fill: #4147f0; }
+
+.clock-arcs {
+  font-family: Arial, sans-serif;
+  font-weight: bold; }
+  .clock-arcs .outline-arc {
+    fill: transparent; }
+  .clock-arcs .clock-label {
+    fill: #ccc; }
+  .clock-arcs .clock-date {
+    font-size: 18px;
+    fill: #ccc; }
+  .clock-arcs .highlight {
+    fill: rgba(192, 96, 192, 0.5); }
+  .clock-arcs .clock-weather-max {
+    fill: #ccc; }
+  .clock-arcs .clock-weather-min {
+    fill: #ccc; }
+
+.slice-info {
+  position: absolute;
+  z-index: 10;
+  border: 2px solid #999;
+  border-radius: 12px;
+  background-color: #ddd;
+  top: 0;
+  right: 0;
+  padding: 8px;
+  width: 500px;
+  height: 300px; }
+  .slice-info .graph {
+    font-size: 10px; }
+  .slice-info .bar {
+    fill: steelblue; }
+  .slice-info .bar:hover {
+    fill: brown; }
+  .slice-info .axis {
+    font: 10px sans-serif; }
+  .slice-info .axis path,
+  .slice-info .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges; }
+  .slice-info .x.axis path {
+    display: none; }
+
+.clock-tooltip {
+  position: absolute;
+  text-align: center;
+  width: 140px;
+  height: 40px;
+  line-height: 38px;
+  padding: 8px;
+  font: 12px sans-serif;
+  font-weight: bold;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none; }
+
+.close-slice {
+  position: relative;
+  float: right;
+  z-index: 10; }
