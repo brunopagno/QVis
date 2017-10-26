@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var path = require('path');
 
 var main = require('./routes/main');
 
@@ -13,7 +14,9 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 // static~
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use('/css', express.static(path.join(__dirname, 'public/css')));
+// app.use('/js', express.static(path.join(__dirname, 'public/js')));
 
 // body parser middleware
 app.use(bodyParser.json());

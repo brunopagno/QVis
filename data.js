@@ -23,11 +23,9 @@ function doTheThing(row) {
 var theData = {
     clocks: function(filename) {
         return new Promise((resolve, reject) => {
-            fs.readFile(path.join(__dirname, 'data', filename), (error, buffer) => {
+            fs.readFile(path.join(__dirname, 'data', filename + ".csv"), (error, buffer) => {
                 let data = [];
                 let result = [];
-
-                console.log('FILENAME: ' + filename);
                 
                 if (error) {
                     console.log("Error: " + error);
@@ -91,7 +89,9 @@ var theData = {
     list: function() {
         return new Promise((resolve, reject) => {
             fs.readdir('./data', (err, items) => {
-                resolve(items);
+                resolve(items.map((item) => {
+                    return item.split('.')[0];
+                }));
             });
         });
     }
