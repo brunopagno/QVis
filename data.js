@@ -79,9 +79,9 @@ var theData = {
                             sumLuminosity += parseInt(min.light);
                         }
                     });
+                    result.shift();
+                    resolve(result);
                 });
-        
-                resolve(result);
             });
         });
     },

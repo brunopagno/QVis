@@ -1,5 +1,7 @@
 .clock {
-  position: relative; }
+  position: relative;
+  float: left;
+}
 
 .solid-arc {
   fill: #4147f0; }

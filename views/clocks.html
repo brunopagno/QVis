@@ -14,17 +14,13 @@
     <script src="/js/clocks.js"></script>
 </head>
 <body>
-    <p>
-        Info
-        <br/>
-        <small>Activities: <%= data[3].activities.length %></small>
-        <br/>
-        <small>Luminosities: <%= data[3].luminosity.length %></small>
-    </p>
+    <p class="small">Clocks: <%= data.length %></p>
     <div class="clocks"></div>
     <script>
-        var data = <%- JSON.stringify(data[3]) %>;
-        new Clock().draw(".clocks", data);
+        <% data.forEach((entry) => { %>
+            var data = <%- JSON.stringify(entry) %>;
+            new Clock().draw(".clocks", data);
+        <% }); %>
     </script>
 </body>
 </html>

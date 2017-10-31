@@ -15,8 +15,6 @@ app.engine('html', require('ejs').renderFile);
 
 // static~
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/css', express.static(path.join(__dirname, 'public/css')));
-// app.use('/js', express.static(path.join(__dirname, 'public/js')));
 
 // body parser middleware
 app.use(bodyParser.json());
