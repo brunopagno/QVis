@@ -41,12 +41,15 @@ var theData = {
                         data.push(rr);
                     });
         
+                    let lastDay = data[0].datetime.getDate();
+                    let lastHour = data[0].datetime.getHours();
                     let entry = {
+                        formattedDate: dateformat(data[0].datetime, 'yyyy-mm-dd h:MM'),
+                        date: data[0].datetime,
+                        day: lastDay,
                         activities: [],
                         luminosity: []
                     };
-                    let lastDay = data[0].datetime.getDate();
-                    let lastHour = data[0].datetime.getHours();
                     let sumActivity = 0;
                     let sumLuminosity = 0;
         
@@ -79,7 +82,6 @@ var theData = {
                             sumLuminosity += parseInt(min.light);
                         }
                     });
-                    result.shift();
                     resolve(result);
                 });
             });
