@@ -21,6 +21,58 @@ function doTheThing(row) {
 }
 
 var theData = {
+    calendar: function(filename) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(path.join(__dirname, 'data', filename + ".csv"), (error, buffer) => {
+                if (error) {
+                    console.log("Error: " + error);
+                }
+
+                parse(buffer, {}, (error, rows) => {
+                    let data = [];
+                    let result = [];
+
+                    if (error) {
+                        console.log("Error: " + error);
+                    }
+
+                    rows.forEach((row) => {
+                        rr = doTheThing(row);
+                        data.push(rr);
+                    });
+
+                    let lastDay = data[0].datetime.getDate();
+                    let entry = {
+                        formattedDate: dateformat(data[0].datetime, 'yyyy-mm-dd h:MM'),
+                        date: data[0].datetime,
+                        activity: 0,
+                        luminosity: 0
+                    };
+                    let sumActivity = 0;
+                    let sumLuminosity = 0;
+
+                    data.forEach((min) => {
+                        if (min.datetime.getDate() != lastDay) {
+                            result.push(entry);
+                            lastDay = min.datetime.getDate();
+                            entry = {
+                                formattedDate: dateformat(min.datetime, 'yyyy-mm-dd h:MM'),
+                                date: min.datetime,
+                                activity: 0,
+                                luminosity: 0
+                            };
+                        } else {
+                            entry.activity += parseInt(min.activity);
+                            entry.luminosity += parseInt(min.light);
+                        }
+                    });
+
+                    resolve(JSON.stringify(result));
+                });
+            });
+        });
+    },
+
     clocks: function(filename) {
         return new Promise((resolve, reject) => {
             fs.readFile(path.join(__dirname, 'data', filename + ".csv"), (error, buffer) => {

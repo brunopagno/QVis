@@ -9,10 +9,15 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.get('/clocks/:id', (req, res, next) => {
-    data.clocks(req.params.id).then((result) => {
-        res.render('clocks.html', { data: result });
-    });
+router.get('/person/:id', (req, res, next) => {
+    data.calendar(req.params.id).then((rr) => {
+        data.clocks(req.params.id).then((result) => {
+            res.render('person.html', {
+                calendata: rr,
+                data: result
+            });
+        });
+    })
 });
 
 module.exports = router;
