@@ -15,6 +15,8 @@ app.engine('html', require('ejs').renderFile);
 
 // static~
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/fullcal', express.static(__dirname + '/node_modules/fullcalendar/dist/'));
+app.use('/moment', express.static(__dirname + '/node_modules/moment/'));
 
 // body parser middleware
 app.use(bodyParser.json());

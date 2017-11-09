@@ -94,13 +94,21 @@ var theData = {
                     });
         
                     let lastDay = data[0].datetime.getDate();
+                    let firstHour = 0;
                     let lastHour = data[0].datetime.getHours();
+                    let initialActivities = [];
+                    let initialLuminosity = [];
+                    while (firstHour < lastHour) {
+                        initialActivities.push(0);
+                        initialLuminosity.push(0);
+                        firstHour += 1;
+                    }
                     let entry = {
                         formattedDate: dateformat(data[0].datetime, 'yyyy-mm-dd h:MM'),
                         date: data[0].datetime,
                         day: lastDay,
-                        activities: [],
-                        luminosity: []
+                        activities: initialActivities,
+                        luminosity: initialLuminosity
                     };
                     let sumActivity = 0;
                     let sumLuminosity = 0;

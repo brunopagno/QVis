@@ -6,24 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>QVis</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.6.2/fullcalendar.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.6.2/fullcalendar.print.css">
+    <link rel="stylesheet" href="/fullcal/fullcalendar.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/clocks.css">
+    <link rel="stylesheet" href="/css/calendar.css">
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.6.2/fullcalendar.min.js"></script>
+    <script src="/moment/moment.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="/fullcal/fullcalendar.min.js"></script>
     <script src="/js/calendar.js"></script>
     <script src="/js/clocks.js"></script>
 </head>
 <body>
     <p class="small">Days: <%= data.length %></p>
-    <div class="calendar"></div>
+    <div id="calendar"></div>
     <div class="clocks"></div>
     <script>
-        fillCalendar('.calendar', <%- calendata %>);
+        fillCalendar('#calendar', <%- calendata %>);
 
         <% data.forEach((entry) => { %>
             var data = <%- JSON.stringify(entry) %>;
