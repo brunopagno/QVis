@@ -79,32 +79,32 @@ var theData = {
                                     return r[0] == entry.date.getDate() &&
                                            r[6] == (entry.date.getMonth() + 1);
                                 });
-                                result.weather = {
+                                entry.weather = {
                                     high: weather[1],
                                     avg: weather[2],
                                     low: weather[3],
                                     events: weather[5]
                                 }
                             });
-                        });
-                    });
 
-                    fs.readFile(path.join(__dirname, 'data', sunFile), (serror, sbuffer) => {
-                        parse(sbuffer, {}, (error, rows) => {
-                            result.forEach((entry) => {
-                                let weather = rows.find((r) => {
-                                    return r[0] == entry.date.getDate() &&
-                                           r[3] == (entry.date.getMonth() + 1);
+                            fs.readFile(path.join(__dirname, 'data', sunFile), (serror, sbuffer) => {
+                                parse(sbuffer, {}, (error, rows) => {
+                                    result.forEach((entry) => {
+                                        let weather = rows.find((r) => {
+                                            return r[0] == entry.date.getDate() &&
+                                                   r[3] == (entry.date.getMonth() + 1);
+                                        });
+                                        entry.sun = {
+                                            sunrise: weather[1],
+                                            sunset: weather[2],
+                                        }
+                                    });
+
+                                    resolve(JSON.stringify(result));
                                 });
-                                result.sun = {
-                                    sunrise: weather[1],
-                                    sunset: weather[2],
-                                }
                             });
                         });
                     });
-
-                    resolve(JSON.stringify(result));
                 });
             });
         });
