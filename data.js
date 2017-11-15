@@ -26,12 +26,17 @@ var theData = {
             fs.readFile(path.join(__dirname, 'data', filename + ".csv"), (error, buffer) => {
                 if (error) {
                     console.log("Error: " + error);
+                    return;
                 }
 
+                let prefix = filename.substr(0, 4).toLowerCase();
+                let weatherFile = prefix + "weather.csv";
+                let sunFile = prefix + "sun.csv";
+                
                 parse(buffer, {}, (error, rows) => {
                     let data = [];
                     let result = [];
-
+                    
                     if (error) {
                         console.log("Error: " + error);
                     }
@@ -65,6 +70,38 @@ var theData = {
                             entry.activity += parseInt(min.activity);
                             entry.luminosity += parseInt(min.light);
                         }
+                    });
+
+                    fs.readFile(path.join(__dirname, 'data', weatherFile), (werror, wbuffer) => {
+                        parse(wbuffer, {}, (error, rows) => {
+                            result.forEach((entry) => {
+                                let weather = rows.find((r) => {
+                                    return r[0] == entry.date.getDate() &&
+                                           r[6] == (entry.date.getMonth() + 1);
+                                });
+                                result.weather = {
+                                    high: weather[1],
+                                    avg: weather[2],
+                                    low: weather[3],
+                                    events: weather[5]
+                                }
+                            });
+                        });
+                    });
+
+                    fs.readFile(path.join(__dirname, 'data', sunFile), (serror, sbuffer) => {
+                        parse(sbuffer, {}, (error, rows) => {
+                            result.forEach((entry) => {
+                                let weather = rows.find((r) => {
+                                    return r[0] == entry.date.getDate() &&
+                                           r[3] == (entry.date.getMonth() + 1);
+                                });
+                                result.sun = {
+                                    sunrise: weather[1],
+                                    sunset: weather[2],
+                                }
+                            });
+                        });
                     });
 
                     resolve(JSON.stringify(result));
@@ -153,6 +190,8 @@ var theData = {
             fs.readdir('./data', (err, items) => {
                 resolve(items.map((item) => {
                     return item.split('.')[0];
+                }).filter((item) => {
+                    return !(item.includes("weather") || item.includes("sun"));
                 }));
             });
         });
