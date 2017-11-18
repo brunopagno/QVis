@@ -1,10 +1,4 @@
-#calendar {
-  float: left;
-  max-width: 680px;
-  max-height: 550px;
-}
-
-#calendar .cal-weather {
+.calendar .cal-weather {
   width: 24px;
   height: 24px;
   position: absolute;
@@ -14,22 +8,19 @@
   background-size: 24px;
   background-position: top right; }
 
-#calendar .sun {
-  background-image: url("/images/sun.jpg"); }
+.calendar .sun {
+  background-image: image-url("sun.png"); }
 
-#calendar .rain {
-  background-image: url("/images/rain.jpg"); }
+.calendar .rain {
+  background-image: image-url("rain.png"); }
 
-#calendar .thunder {
-  background-image: url("/images/thunder.jpg"); }
-
-#calendar .fog {
-  background-image: url("/images/fog.jpg"); }
+.calendar .thunder {
+  background-image: image-url("thunder.png"); }
 
 .ev-cal-holder {
   position: relative; }
 
-#calendar-box {
+.calendar-box {
   position: absolute;
   top: -18px;
   right: 18px;

@@ -1,0 +1,65 @@
+.calendar {
+    .cal-weather {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      z-index: 10;
+      top: -22px;
+      background-repeat: no-repeat;
+      background-size: 24px;
+      background-position: top right;
+    }
+  
+    .sun {
+      background-image: image-url('sun.png');    
+    }
+    .rain {
+      background-image: image-url('rain.png');
+    }
+    .thunder {
+      background-image: image-url('thunder.png');
+    }
+  }
+  
+  .ev-cal-holder {
+    position: relative;
+  }
+  
+  .calendar-box {
+    position: absolute;
+    top: -18px;
+    right: 18px;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  .full-histogram {
+    position: absolute;
+    z-index: 10;
+    border: 2px solid #999;
+    border-radius: 12px;
+    background-color: #ddd;
+    top: 70px;
+    left: 70px;
+    padding: 8px;
+    width: 980px;
+  
+    .c3-tooltip-container {
+      max-width: 220px;
+    }
+  
+    .graph {
+      font-size: 10px;
+    }
+  
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+  
+    .area {
+      fill: rgba(101, 44, 215, 0.6);
+    }
+  }

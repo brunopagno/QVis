@@ -14,7 +14,8 @@ function fillCalendar(element, data) {
             allDay: true,
             color: steps_color(d.activity),
             textColor: 'black',
-            order: 1
+            order: 1,
+            weather: d.weather
         });
     });
 
@@ -36,7 +37,16 @@ function fillCalendar(element, data) {
             el.css('padding', '6px 12px 14px 12px');
             el.css('font-weight', 'bold');
 
+            var tooltip = ev.weather.events;
+            if (!tooltip) tooltip = "Sunny";
+            var weather = $("<div title=\"" + tooltip + "\">");
+            if (!ev.weather.events) { weather.attr("class", "cal-weather sun"); }
+            else if (ev.weather.events.indexOf("Rain") >= 0) { weather.attr("class", "cal-weather rain"); }
+            else if (ev.weather.events.indexOf("Thunderstorm") >= 0) { weather.attr("class", "cal-weather thunder"); }
+            else if (ev.weather.events.indexOf("Fog") >= 0) { weather.attr("class", "cal-weather fog"); }
+
             var holder = $("<div>").attr("class", "ev-cal-holder");
+            holder.append(weather);
             holder.append(el);
             return holder;
         }
