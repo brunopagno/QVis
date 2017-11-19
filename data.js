@@ -282,6 +282,46 @@ var theData = {
         });
     },
 
+    histogramHour: function(filename, year, month, day, hour) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(path.join(__dirname, 'data', filename + ".csv"), (error, buffer) => {
+                let data = [];
+                let result = [];
+                
+                if (error) {
+                    console.log("Error: " + error);
+                }
+        
+                let prefix = filename.substr(0, 4).toLowerCase();
+                let weatherFile = prefix + "weather.csv";
+                let sunFile = prefix + "sun.csv";
+
+                parse(buffer, {}, (error, rows) => {
+                    if (error) {
+                        console.log("Error: " + error);
+                    }
+        
+                    rows.forEach((row) => {
+                        rr = doTheThing(row);
+                        data.push(rr);
+                    });
+
+                    result = data.filter((item) => {
+                        let d1 = item.datetime;
+                        return (
+                            d1.getFullYear() == year &&
+                            (d1.getMonth() + 1) == month &&
+                            d1.getDate() == day &&
+                            (d1.getHours() + 1) == hour
+                        );
+                    });
+
+                    resolve(result);
+                });
+            });
+        });
+    },
+
     list: function() {
         return new Promise((resolve, reject) => {
             fs.readdir('./data', (err, items) => {

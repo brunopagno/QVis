@@ -141,6 +141,23 @@ Clock.prototype.arcMouseOut = function () {
         .style("opacity", 0);
 }
 
+Clock.prototype.arcMouseClick = function (element, hour) {
+    if ($(element).attr('class').indexOf("highlight") > 0) {
+        $(this._element[0]).children(".slice-info").css("visibility", "hidden");
+
+        var pathClass = $(element).attr("class").replace(new RegExp('(\\s|^)' + 'highlight' + '(\\s|$)', 'g'), '$2');
+        $(element).parent().children(".interaction-path").attr("class", pathClass);
+    } else {
+        var pathClass = $(element).attr("class").replace(new RegExp('(\\s|^)' + 'highlight' + '(\\s|$)', 'g'), '$2');
+        $(element).parent().children(".interaction-path").attr("class", pathClass);
+
+        $(element).attr("class", $(element).attr("class") + " highlight");
+        
+        var user_id = $("#current-person").data("id");
+        showDataForClockSlice(this._slice_info, user_id, this._data.date, hour, this._size);
+    }
+}
+
 /////////////////////////////////////////////////
 // Sun Arc
 /////////////////////////////////////////////////
@@ -371,4 +388,64 @@ TextArc.prototype.draw = function (svg, date) {
         .attr("text-anchor", "middle")
         .attr("transform", "translate(" + this._clock._size / 2 + "," + this._clock._size / 2.3 + ")")
         .text(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
+}
+
+/////////////////////////////////////////////////
+// Ajax function to load subdata
+/////////////////////////////////////////////////
+
+function showDataForClockSlice(element, user_id, date, hour, clock_width) {
+    element.selectAll("*").remove();
+
+    element.append("div")
+        .attr("class", "close-slice")
+        .append("a")
+        .attr("class", "button round alert tiny")
+        .text("X")
+        .on("mousedown", function () {
+            element.style("visibility", "hidden");
+            element.style("display", "none");
+        });
+
+    element.append("h3")
+        .text((hour - 1) + "h - " + hour + "h")
+        .append("small")
+        .text(" of day " + date.getDate());
+
+    var url = "/person/" + user_id + "/histogram/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + "/" + hour;
+    $.ajax({
+        url: url,
+        success: function (data) {
+            var xaxis = ['x'];
+            var yaxis = ['activities'];
+            data.forEach(function (d) {
+                xaxis.push(new Date(d.datetime));
+                yaxis.push(+d.activity);
+            });
+
+            var chart = c3.generate({
+                bindto: element.append("div"),
+                size: {
+                    height: 220
+                },
+                data: {
+                    x: 'x',
+                    columns: [xaxis, yaxis],
+                    type: 'bar'
+                },
+                axis: {
+                    x: {
+                        type: 'timeseries',
+                        tick: {
+                            format: '%H:%M'
+                        }
+                    }
+                }
+            });
+        },
+        error: function () { console.log("Error loading slice data"); }
+    });
+
+    element.style("visibility", "visible");
+    element.style("display", "inherit");
 }
