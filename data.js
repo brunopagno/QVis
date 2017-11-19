@@ -120,6 +120,10 @@ var theData = {
                     console.log("Error: " + error);
                 }
         
+                let prefix = filename.substr(0, 4).toLowerCase();
+                let weatherFile = prefix + "weather.csv";
+                let sunFile = prefix + "sun.csv";
+
                 parse(buffer, {}, (error, rows) => {
                     if (error) {
                         console.log("Error: " + error);
@@ -179,7 +183,61 @@ var theData = {
                             sumLuminosity += parseInt(min.light);
                         }
                     });
-                    resolve(result);
+
+                    fs.readFile(path.join(__dirname, 'data', weatherFile), (werror, wbuffer) => {
+                        parse(wbuffer, {}, (error, rows) => {
+                            result.forEach((entry) => {
+                                let weather = rows.find((r) => {
+                                    return r[0] == entry.date.getDate() &&
+                                           r[6] == (entry.date.getMonth() + 1);
+                                });
+                                entry.weather = {
+                                    high: weather[1],
+                                    avg: weather[2],
+                                    low: weather[3],
+                                    events: weather[5]
+                                }
+                            });
+
+                            fs.readFile(path.join(__dirname, 'data', sunFile), (serror, sbuffer) => {
+                                parse(sbuffer, {}, (error, rows) => {
+                                    result.forEach((entry) => {
+                                        let weather = rows.find((r) => {
+                                            return r[0] == entry.date.getDate() &&
+                                                   r[3] == (entry.date.getMonth() + 1);
+                                        });
+
+                                        let splitRise = weather[1].split(':');
+                                        let sunriseDate = new Date(
+                                            entry.date.getFullYear(),
+                                            entry.date.getMonth(),
+                                            entry.date.getDate(),
+                                            splitRise[0],
+                                            splitRise[1],
+                                            0
+                                        );
+                                        
+                                        let splitSet = weather[2].split(':');
+                                        let sunsetDate = new Date(
+                                            entry.date.getFullYear(),
+                                            entry.date.getMonth(),
+                                            entry.date.getDate(),
+                                            splitSet[0],
+                                            splitSet[1],
+                                            0
+                                        );
+
+                                        entry.sun = {
+                                            sunrise: sunriseDate,
+                                            sunset: sunsetDate,
+                                        }
+                                    });
+
+                                    resolve(result);
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
