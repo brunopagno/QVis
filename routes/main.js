@@ -9,12 +9,24 @@ router.get('/', (req, res, next) => {
     });
 });
 
+router.get('/person/:id/histogram/:year/:month/:day', (req, res, next) => {
+    data.histogram(
+        req.params.id,
+        req.params.year,
+        req.params.month,
+        req.params.day,
+    ).then((result) => {    
+        res.json(result);
+    });
+});
+
 router.get('/person/:id', (req, res, next) => {
     data.calendar(req.params.id).then((rr) => {
         data.clocks(req.params.id).then((result) => {
             res.render('person.html', {
                 calendata: rr,
-                data: result
+                data: result,
+                userId: req.params.id
             });
         });
     })

@@ -95,14 +95,14 @@ Clock.prototype.draw = function (element, data) {
 
 Clock.prototype.drawWeather = function (svg) {
     var weather_size = 32;
-    var icon = "/images/sun.jpg";
+    var icon = "/images/sun.png";
     if (this._data.weather && this._data.weather.events) {
         if (this._data.weather.events.indexOf("Rain") >= 0) {
-            icon = "/images/rain.jpg";
+            icon = "/images/rain.png";
         } else if (this._data.weather.events.indexOf("Thunderstorm") >= 0) {
-            icon = "/images/thunder.jpg";
+            icon = "/images/thunder.png";
         } else if (this._data.weather.events.indexOf("Fog") >= 0) {
-            icon = "/images/fog.jpg";
+            icon = "/images/fog.png";
         }
     }
 
@@ -149,7 +149,7 @@ function SunArc(clock) {
     this._clock = clock;
     this._active = true;
     this._width = 0.08;
-    this._pie = d3.pie()
+    this._pie = d3.layout.pie()
         .sort(null)
         .value(function (d) { return 1; });
 }
@@ -165,7 +165,7 @@ SunArc.prototype.validate = function (data) {
 }
 
 SunArc.prototype.draw = function (svg, data, outerRadius, innerRadius) {
-    var sun_scale = d3.scaleLinear().domain([0, 24]).range([0, 360]);
+    var sun_scale = d3.scale.linear().domain([0, 24]).range([0, 360]);
 
     var sunSvg = svg.append("g")
         .attr("class", "sun-arc")
@@ -174,7 +174,7 @@ SunArc.prototype.draw = function (svg, data, outerRadius, innerRadius) {
     var dayStartAngle = sun_scale(data.sun.sunrise.getHours() + data.sun.sunrise.getMinutes() / 60) * Math.PI / 180;
     var dayEndAngle = sun_scale(data.sun.sunset.getHours() + data.sun.sunset.getMinutes() / 60) * Math.PI / 180;
 
-    var sunArc = d3.arc()
+    var sunArc = d3.svg.arc()
         .innerRadius(innerRadius)
         .outerRadius(outerRadius);
 
@@ -237,9 +237,9 @@ LuminosityArc.prototype.validate = function (data) {
 
 LuminosityArc.prototype.draw = function (svg, data, outerRadius, innerRadius) {
     var max_luminosity = d3.max(data.luminosity);
-    var luminosity_scale = d3.scaleLinear().domain([0, max_luminosity / 2, max_luminosity]).range(["#999900", "#cccc00", "#ffff66"]);
+    var luminosity_scale = d3.scale.linear().domain([0, max_luminosity / 2, max_luminosity]).range(["#999900", "#cccc00", "#ffff66"]);
 
-    var innerPie = d3.pie()
+    var innerPie = d3.layout.pie()
         .sort(null)
         .padAngle(-0.01)
         .value(function (d) { return 1; });
@@ -248,7 +248,7 @@ LuminosityArc.prototype.draw = function (svg, data, outerRadius, innerRadius) {
         .attr("class", "luminosity-arc")
         .attr("transform", "translate(" + this._clock._size / 2 + "," + this._clock._size / 2 + ")");
 
-    var luminosityArc = d3.arc()
+    var luminosityArc = d3.svg.arc()
         .innerRadius(innerRadius)
         .outerRadius(outerRadius);
 
@@ -289,13 +289,13 @@ ActivityArc.prototype.draw = function (svg, data, outerRadius, innerRadius) {
     if ($('.clocks-relative-to-all').is(":checked")) {
         max_activity = max_selected_activity;
     }
-    var activity_scale = d3.scaleLinear().domain([0, max_activity]).range([0, 100]);
+    var activity_scale = d3.scale.linear().domain([0, max_activity]).range([0, 100]);
 
-    var pie = d3.pie()
+    var pie = d3.layout.pie()
         .sort(null)
         .value(function (d) { return 1; });
 
-    var activityArc = d3.arc()
+    var activityArc = d3.svg.arc()
         .innerRadius(innerRadius)
         .outerRadius(function (d) {
             if (d.data.activity == "sleep") {
@@ -306,7 +306,7 @@ ActivityArc.prototype.draw = function (svg, data, outerRadius, innerRadius) {
             }
         });
 
-    var activityOutlineArc = d3.arc()
+    var activityOutlineArc = d3.svg.arc()
         .innerRadius(innerRadius)
         .outerRadius(outerRadius);
 

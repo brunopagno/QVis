@@ -15,16 +15,16 @@
   background-position: top right; }
 
 #calendar .sun {
-  background-image: url("/images/sun.jpg"); }
+  background-image: url("/images/sun.png"); }
 
 #calendar .rain {
-  background-image: url("/images/rain.jpg"); }
+  background-image: url("/images/rain.png"); }
 
 #calendar .thunder {
-  background-image: url("/images/thunder.jpg"); }
+  background-image: url("/images/thunder.png"); }
 
 #calendar .fog {
-  background-image: url("/images/fog.jpg"); }
+  background-image: url("/images/fog.png"); }
 
 .ev-cal-holder {
   position: relative; }
