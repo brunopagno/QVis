@@ -1,6 +1,7 @@
 .clock {
   position: relative;
   float: left;
+  display: none;
 }
 
 .solid-arc {

@@ -1,3 +1,5 @@
+calendarSelectedDays = [];
+
 function fillCalendar(element, data) {
     var max_activity = d3.max(data, function (d) { return d.activity });
     var steps_color = d3.scale.linear().domain([0, max_activity / 2, max_activity]).range(["#ff1a1a", "#ffff1a", "#1aff1a"]);
@@ -36,6 +38,26 @@ function fillCalendar(element, data) {
             el.css('height', '5px');
             el.css('padding', '6px 12px 14px 12px');
             el.css('font-weight', 'bold');
+
+            var checkbox = $('<input type=checkbox class="calendar-box">')
+            checkbox.attr("dayid", dayid);
+            checkbox.attr("value", ev.start);
+            checkbox.prop("checked", calendarSelectedDays.indexOf(dayid) >= 0 || $('.calendar-select-all').prop('checked'));
+
+            // CHECK CALENDAR DAY
+            checkbox.change(function() {
+                var dd = ev.d.formattedDate.substr(0, 10);
+                if (this.checked) {
+                    calendarSelectedDays.push(dd);
+                    $("#" + dd).css("display", "block");
+                } else {
+                    var index = calendarSelectedDays.indexOf(ev.dayid);
+                    if (index > -1) {
+                        calendarSelectedDays.splice(index, 1);
+                    }
+                    $("#" + dd).css("display", "none");
+                }
+            });
 
             var tooltip = ev.weather.events;
             if (!tooltip) tooltip = "Sunny";
@@ -101,6 +123,7 @@ function fillCalendar(element, data) {
             });
 
             var holder = $("<div>").attr("class", "ev-cal-holder");
+            holder.append(checkbox);
             holder.append(weather);
             holder.append(el);
             return holder;
